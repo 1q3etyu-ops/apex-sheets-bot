@@ -1,25 +1,20 @@
 import os
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-TOKEN = "8965323255:AAGvz92nrEPe6TTewryY3bjBjmOEYqmxdRM"
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_name = update.effective_user.first_name
-    welcome_message = (
-        f"أهلاً بك يا {user_name} في متجر Apex Sheets!\n\n"
-        "احصل الآن على ملف الأوراق الاحترافي بسعر مميز جداً:\n"
-        "السعر: 5.00 USDT\n"
-        "شبكة الدفع: BNB Smart Chain (BEP20)\n\n"
-        "عنوان المحفظة لتحويل المبلغ:\n"
-        "0xYourWalletAddressHere\n\n"
-        "ملاحظة هامة: بعد إتمام التحويل، أرسل صورة إيصال الدفع أو رقم المعاملة هنا، وسيتم إرسال الملف إليك مباشرة!"
-    )
-    await update.message.reply_text(welcome_message)
-  def main():
-    app = ApplicationBuilder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    print("Bot is running...")
-    app.run_polling()
+import telebot
+from telebot import types
+
+TOKEN = "8965323255:AAGvz92nrEpE6TTewryY3_jB_eE9dJ3p8r4"
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    user_name = message.from_user.first_name
+    welcome_text = f"مرحباً بك يا {user_name} في Apex Sheets!\n\nيمكنك الآن الحصول على ملف الأوراق الاحترافية بسعر مميز جداً:\n\nالسعر: USDT 5.00\nشبكة الدفع: BNB Smart Chain (BEP20)\nعنوان محفظة الأجرة:\n0xYourWalletAddressHere\n\nأرسل إيصال الدفع المقبول هنا، وسيتم إرسال الملف إليك مباشرة!"
+    bot.reply_to(message, welcome_text)
+
+def main():
+    print("البوت قيد التشغيل...")
+    bot.infinity_polling()
 
 if __name__ == "__main__":
     main()
-  
+    
